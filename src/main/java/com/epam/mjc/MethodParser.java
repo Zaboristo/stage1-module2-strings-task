@@ -1,5 +1,9 @@
 package com.epam.mjc;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
 public class MethodParser {
 
     /**
@@ -20,6 +24,36 @@ public class MethodParser {
      * @return {@link MethodSignature} object filled with parsed values from source string
      */
     public MethodSignature parseFunction(String signatureString) {
-        throw new UnsupportedOperationException("You should implement this method.");
+
+        String fullArgs = signatureString.substring(signatureString.indexOf('(') + 1,signatureString.indexOf(')'));
+
+        List<String> arguments = List.of(fullArgs.split(", | "));
+        List <MethodSignature.Argument> parsedArgs = new ArrayList<MethodSignature.Argument>();
+        for (int i = 0; i<arguments.size() && arguments.get(i) != ""; i = i+2){
+            parsedArgs.add((MethodSignature.Argument) new MethodSignature.Argument(arguments.get(i), arguments.get(i+1)));
+        }
+        StringTokenizer str1 = new StringTokenizer(signatureString);
+        String accessMod ="";
+        String methodName;
+        String returnType;
+        if(signatureString.contains("public") || signatureString.contains("private")){
+            accessMod = str1.nextToken();}
+        else accessMod = null;
+        returnType = str1.nextToken();
+        methodName = str1.nextToken();
+        methodName = methodName.substring(0, methodName.indexOf('('));
+        MethodSignature parsedMethod = new MethodSignature(methodName, parsedArgs);
+        System.out.println(arguments);
+        System.out.println(methodName);
+
+        System.out.println(returnType);
+        if (accessMod != null) {
+            System.out.println(accessMod);
+        }
+        if (methodName == null || returnType == null)
+            throw new UnsupportedOperationException("You should implement this method.");
+        parsedMethod.setAccessModifier(accessMod);
+        parsedMethod.setReturnType(returnType);
+        return parsedMethod;
     }
 }
