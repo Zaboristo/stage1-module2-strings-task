@@ -14,10 +14,17 @@ public class StringSplitter {
     public List<String> splitByDelimiters(String source, Collection<String> delimiters) {
         List<String> result = new ArrayList<String>();
         result.add(source);
-        String[] particles = (String[]) delimiters.toArray();
+        String[] particles = (String[]) delimiters.toArray(new String[0]);
         for (int i = 0; i<particles.length; i++){
             result = splitterUnit(result, particles[i]);
         }
+        while(result.indexOf("")!= -1)
+        {
+            result.remove(result.indexOf(""));
+        }
+        if( result != null)
+        return result;
+        else
         throw new UnsupportedOperationException("You should implement this method.");
     }
 
